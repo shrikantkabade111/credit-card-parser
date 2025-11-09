@@ -1,0 +1,53 @@
+# docker-compose.yml
+
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    
+    # Load all variables from .env
+    env_file: .env
+    
+    depends_on:
+      redis:
+        condition: service_healthy
+        
+    # Mount local code to the correct WORKDIR
+    volumes:
+      - ./app:/code/app
+      
+    # Run as the new user
+    user: "1000:1000"
+      
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  worker:
+    build: .
+    
+    # Load all variables from .env
+    env_file: .env
+    
+    depends_on:
+      redis:
+        condition: service_healthy
+        
+    # Mount local code to the correct WORKDIR
+    volumes:
+      - ./app:/code/app
+      
+    # --- NEW SECURITY HARDENING ---
+    # Run as the non-root user created in the Dockerfile
+    user: "1000:1000"
+      
+    command: celery -A app.tasks:celery_app worker --loglevel=info --concurrency=2

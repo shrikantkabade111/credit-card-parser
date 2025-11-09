@@ -1,0 +1,24 @@
+# requirements.txt
+
+# Web Framework
+fastapi[all]
+uvicorn[standard]
+pydantic>=2.5
+pydantic-settings>=2.0
+
+# Async Task Queue
+celery[redis]
+
+# PDF Parsing
+pdfplumber
+pdf2image
+pytesseract
+
+# Security & Utilities
+python-dotenv
+python-multipart # For FastAPI File Uploads
+sentry-sdk
+# Testing
+pytest
+httpx # For async API testing
+

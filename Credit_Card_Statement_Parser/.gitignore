@@ -1,0 +1,32 @@
+.env
+
+# --- Python ---
+# Bytecode and cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv
+venv
+env
+
+# --- Testing & Coverage ---
+# Pytest cache and coverage reports
+.pytest_cache/
+.coverage
+htmlcov/
+
+# --- IDE / Editor ---
+# VSCode, PyCharm, etc.
+.vscode/
+.idea/
+
+# --- OS ---
+# macOS
+.DS_Store
+
+# --- Local Output ---
+# Ignore any JSON results you downloaded locally
+parsing_result_*.json
